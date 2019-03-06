@@ -1,0 +1,142 @@
+[![Build Status](https://travis-ci.org/reneeb/Mojolicious-Plugin-JavaScript-Console.svg?branch=master)](https://travis-ci.org/reneeb/Mojolicious-Plugin-JavaScript-Console)
+[![Kwalitee status](http://cpants.cpanauthors.org/dist/Mojolicious-Plugin-JavaScript-Console.png)](http://cpants.charsbar.org/dist/overview/Mojolicious-Plugin-JavaScript-Console)
+[![GitHub issues](https://img.shields.io/github/issues/reneeb/Mojolicious-Plugin-JavaScript-Console.svg)](https://github.com/reneeb/Mojolicious-Plugin-JavaScript-Console/issues)
+
+# NAME
+
+Mojolicious::Plugin::JavaScript::Console - use the JavaScript console from Mojolicious applications
+
+# VERSION
+
+version 0.02
+
+# SYNOPSIS
+
+    use Mojolicious::Lite;
+    
+    plugin 'JavaScript::Console';
+    
+    get '/' => sub {
+        my $self = shift;
+        $self->console->group( 'start' );
+        $self->console->log( 'logging with JavaScript::Console' );
+        $self->console->warn( 'this is for $foo #25' );
+        $self->console->group_end;
+    
+        $self->console->dir_by_id( 'test' );
+    
+        $self->render( 
+            'index', 
+        );
+    };
+    
+    app->start;
+    
+    __DATA__
+    @@ index.html.ep
+    <div id="test"><h2>JavaScript::Console</h2></div>
+    Please open a JavaScript console
+    <%= Mojo::ByteStream->new( console()->output ) %>
+
+# DESCRIPTION
+
+`Mojolicious::Plugin::JavaScript::Console` is a simple plugin to print
+debug output to a javascript console.
+
+# METHODS
+
+## register
+
+    # in Mojolicious
+    sub format_output {
+        return JSON::XS->new->encode( shift );
+    }
+    
+    $app->plugin(
+      'JavaScript::Console' => {
+        charset   => 'utf-8',
+        formatter => \&format_output,
+      },
+    );
+
+    # in Mojolicious::Lite
+    plugin 'JavaScript::Console' => {
+      charset   => 'utf-8',
+      formatter => \&format_output,
+    };
+
+# HELPERS
+
+## console
+
+    my $console = $c->console;
+    $c->console->log( 'Logging output' );
+
+returns a `JavaScript::Console` object.
+
+# REPOSITORY
+
+    http://github.com/reneeb/Mojolicious-Plugin-JavaScript-Console
+
+# DEPENDENCIES
+
+- Mojolicious
+- JavaScript::Console
+
+
+
+# Development
+
+The distribution is contained in a Git repository, so simply clone the
+repository
+
+```
+$ git clone http://github.com/reneeb/Mojolicious-Plugin-JavaScript-Console.git
+```
+
+and change into the newly-created directory.
+
+```
+$ cd Mojolicious-Plugin-JavaScript-Console
+```
+
+The project uses [`Dist::Zilla`](https://metacpan.org/pod/Dist::Zilla) to
+build the distribution, hence this will need to be installed before
+continuing:
+
+```
+$ cpanm Dist::Zilla
+```
+
+To install the required prequisite packages, run the following set of
+commands:
+
+```
+$ dzil authordeps --missing | cpanm
+$ dzil listdeps --author --missing | cpanm
+```
+
+The distribution can be tested like so:
+
+```
+$ dzil test
+```
+
+To run the full set of tests (including author and release-process tests),
+add the `--author` and `--release` options:
+
+```
+$ dzil test --author --release
+```
+
+# AUTHOR
+
+Renee Baecker <reneeb@cpan.org>
+
+# COPYRIGHT AND LICENSE
+
+This software is Copyright (c) 2015 by Renee Baecker.
+
+This is free software, licensed under:
+
+    The Artistic License 2.0 (GPL Compatible)
