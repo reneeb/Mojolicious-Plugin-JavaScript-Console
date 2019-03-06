@@ -13,7 +13,9 @@ our $VERSION = 0.02;
 sub register {
     my ($plugin, $mojo, $param) = @_;
 
-    my $console = JavaScript::Console->new( %{ $param || {} } );
+    $param = {} if 'HASH' ne ref $param;
+
+    my $console = JavaScript::Console->new( %{ $param } );
 
     $mojo->helper(
         'console' => sub {
