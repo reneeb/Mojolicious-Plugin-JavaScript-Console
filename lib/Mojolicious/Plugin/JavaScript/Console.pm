@@ -8,7 +8,7 @@ use warnings;
 use Mojo::Base qw(Mojolicious::Plugin);
 use JavaScript::Console;
 
-our $VERSION = 0.02;
+our $VERSION = '0.03';
 
 sub register {
     my ($plugin, $mojo, $param) = @_;
